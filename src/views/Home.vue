@@ -7,13 +7,11 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import NavBar from '@/components/NavBar.vue'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld,
     NavBar
   },
   data () {
@@ -30,6 +28,8 @@ export default {
 }
 .content {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 90px);
+  margin-top: 10px;
+  background-color: #222;
 }
 </style>
