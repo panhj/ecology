@@ -1,16 +1,7 @@
 <template>
   <div class="home">
-    <NavBar class="navbar"/>
+    <NavBar class="header"/>
     <router-view class="content"/>
-    <el-input v-model="input" placeholder="请输入内容"></el-input>
-    <el-select v-model="value" placeholder="请选择">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
   </div>
 </template>
 
@@ -26,15 +17,19 @@ export default {
     NavBar
   },
   data () {
-    return {
-      input: ''
-    }
+    return { }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.home {
-  padding: 20px;
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: rgb(41, 81, 202);
+}
+.content {
+  width: 100%;
+  height: calc(100vh - 100px);
 }
 </style>
