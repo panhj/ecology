@@ -27,9 +27,10 @@ export default {
   background-color: rgb(41, 81, 202);
 }
 .content {
-  width: 100%;
-  height: calc(100vh - 90px);
-  margin-top: 10px;
-  background-color: #222;
+  position: relative;
+  width: calc(100% - 20px);
+  height: calc(100vh - 100px);
+  margin: 10px;
+  background-color: @bg-color;
 }
 </style>

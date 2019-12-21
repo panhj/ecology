@@ -55,9 +55,11 @@ header {
     li, a {
       display: inline-block;
       width: 120px;
-      height: 80px;
-      line-height: 80px;
+      height: @header-h;
+      line-height: @header-h;
+      text-align: center;
       user-select: none;
+      transition: background-color .2s;
     }
     a:hover, li.active a {
       background-color: rgb(40, 138, 223);
@@ -70,13 +72,15 @@ header {
       padding: 2px 15px 3px 15px;
       font-size: 14px;
       color: #fff;
-      border: 1px solid #fff;
+      background-color: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 4px;
       cursor: pointer;
     }
     .set-btn:hover {
       color: #666;
       background-color: #fff;
+      user-select: none;
     }
   }
 }
