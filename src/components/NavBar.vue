@@ -30,7 +30,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px;
+  padding: 0 40px;
   color: #fff;
   .logo {
     height: 100%;

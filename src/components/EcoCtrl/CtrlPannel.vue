@@ -10,15 +10,14 @@ export default {
 </script>
 <style lang="less" scoped>
 @gap: 10px;
-@ctrl-h: calc(100vh - @sub-menu-h - @gap - @header-h - 20px);
 .ctrl-pannel {
-  border: 1px solid #eaeaea;
+  border: 1px solid #dfdfdf;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   margin-top: @gap;
   width: @left-pannel-w;
-  height: @ctrl-h;
+  height: 100%;
   overflow: auto;
-  box-shadow: 0 0 5px 0px rgba(0,0,0,.12);
+  // box-shadow: 0 0 5px 0px rgba(0,0,0,.12);
 }
 </style>

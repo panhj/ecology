@@ -1,5 +1,5 @@
 <template>
-  <div class="ecology-container">
+  <div>
     <ul class="menu flex-center">
       <li><router-link to="#"><span>生态流量决策</span></router-link></li>
       <li><router-link to="#"><span>生态流量决策</span></router-link></li>
@@ -18,23 +18,24 @@ export default {
 .menu {
   width: @left-pannel-w;
   &>li {
-    height: 120px;
+    height: @sub-menu-h;
     font-size: 16px;
     color: #fff;
     flex-grow: 1;
     margin-left: 3px;
     border-radius: 4px;
     overflow: hidden;
+    &>a {
+      display: flex;
+      align-items: center;
+      background-color: rgb(139, 195, 74);
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      text-align: center;
+    }
   }
   &>li:nth-child(1) {margin: 0;}
-  &>li a {
-    display: flex;
-    align-items: center;
-    background-color: rgb(139, 195, 74);
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-  }
   &>li.active a {
     background-color: rgb(40, 138, 223);
   }

@@ -8,20 +8,20 @@
         xxx2
       </CtrlItem>
     </CtrlPannel>
-    <div class="map-container">
-      <div class="map">
-        
-      </div>
-    </div>
+    <RiverMap>
+      
+    </RiverMap>
   </div>
 </template>
 <script>
-import CtrlPannel from '@/components/EcoCtrl/CtrlPannel.vue'
-import CtrlItem from '@/components/EcoCtrl/CtrlItem.vue'
+import CtrlPannel from '@/components/ecoCtrl/CtrlPannel.vue'
+import CtrlItem from '@/components/ecoCtrl/CtrlItem.vue'
+import RiverMap from '@/components/RiverMap.vue'
 export default {
   components: {
     CtrlPannel,
-    CtrlItem
+    CtrlItem,
+    RiverMap
   }
 }
 </script>

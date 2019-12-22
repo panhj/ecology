@@ -21,16 +21,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.home {
+  height: 100vh;
+  min-width: 1100px;
+  min-height: 600px;
+  overflow: auto;
+  background-color: @bg-color;
+}
 .header {
   width: 100%;
-  height: 80px;
+  height: @header-h;
   background-color: rgb(41, 81, 202);
 }
 .content {
   position: relative;
   width: calc(100% - 20px);
-  height: calc(100vh - 100px);
+  height: calc(100% - @header-h - 20px);
   margin: 10px;
-  background-color: @bg-color;
 }
 </style>

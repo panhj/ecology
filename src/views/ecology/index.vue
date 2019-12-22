@@ -1,7 +1,7 @@
 <template>
-  <div class="ecology-container">
+  <div>
     <SubMenu></SubMenu>
-    <router-view></router-view>
+    <router-view class="sub-content"></router-view>
   </div>
 </template>
 <script>
@@ -12,3 +12,8 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.sub-content {
+  height: calc(100% - @sub-menu-h - 10px);
+}
+</style>
