@@ -2,10 +2,43 @@
   <div>
     <CtrlPannel>
       <CtrlItem title="方案创建">
-        xxx
+        <div class="form-item flex-center">
+          <span class="label">创建名称</span>
+          <el-input class="input" v-model="Form.createName"></el-input>
+          <span class="meta">（最高8个字符）</span>
+        </div>
+        <div class="form-item flex-center">
+          <span class="label">创建人</span>
+          <el-input class="input" v-model="Form.createAuthor"></el-input>
+          <span class="meta">（最高8个字符）</span>
+        </div>
       </CtrlItem>
-      <CtrlItem title="方案创建2">
-        xxx2
+      <CtrlItem title="读取数据">
+        <InputVeri :verity="Verity.waterFile">
+          <div class="upload-btn"><span>导入水数据</span></div>
+        </InputVeri>
+      </CtrlItem>
+      <CtrlItem title="参数设置">
+        <div class="double-select">
+          <el-select class="select m-r" v-model="Form.bioType" placeholder="选择目标物种">
+            <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <el-select class="select" v-model="Form.bioType" placeholder="选择环境参数">
+            <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </div>
+        <InputVeri :verity="Verity.autoInterval" tip="（输入1-10整数）">
+          <el-input class="input" v-model="Form.autoInterval" placeholder="输入环境参数间隔"></el-input>
+        </InputVeri>
+        <InputVeri :verity="Verity.manualInterval" tip="（逗号间隔，小数点后最多两位）">
+          <el-input class="input" v-model="Form.manualInterval" placeholder="自定义值"></el-input>
+        </InputVeri>
+      </CtrlItem>
+      <CtrlItem title="模型计算">
+        <div class="btns flex-center">
+          <el-button type="primary">求指数</el-button>
+          <el-button type="primary">求均值</el-button>
+        </div>
       </CtrlItem>
     </CtrlPannel>
     <RiverMap>
@@ -16,12 +49,70 @@
 <script>
 import CtrlPannel from '@/components/ecoCtrl/CtrlPannel.vue'
 import CtrlItem from '@/components/ecoCtrl/CtrlItem.vue'
+import InputVeri from '@/components/ecoCtrl/InputVeri.vue'
 import RiverMap from '@/components/RiverMap.vue'
 export default {
   components: {
     CtrlPannel,
     CtrlItem,
-    RiverMap
+    RiverMap,
+    InputVeri
+  },
+  data () {
+    return {
+      bioTypes: [],
+      Form: {
+        createName: "",
+        createAuthor: "",
+        bioType: "",
+        autoInterval: "",
+        manualInterval: ""
+      },
+      Verity: {
+        waterFile: false,
+        autoInterval: false,
+        manualInterval: false
+      }
+    }
+  },
+  mounted () {
+    this.$http.post("bio-req/bio-types").then(res => {
+      console.log(res)
+    }).catch(e => {console.warn(e)})
   }
 }
 </script>
+<style lang="less" scoped>
+.input, .select {
+  width: 135px;
+}
+.form-item,.double-select, .btns {
+  margin-top: 10px;
+}
+.form-item {
+  justify-content: flex-start;
+  font-size: 14px;
+  .label, .meta {
+    display: inline-block;
+  }
+  .label {
+    width: 70px;
+  }
+  .meta {
+    margin-left: 2px;
+    font-size: 13px;
+    color: #999;
+    white-space: nowrap;
+  }
+}
+.double-select {
+  margin-left: 30px;
+  .select.m-r { margin-right: 10px; }
+}
+.btns {
+  padding: 0 20px;
+  button {
+    padding: 7px 40px !important;
+  }
+}
+</style>

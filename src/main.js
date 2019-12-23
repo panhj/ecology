@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import http from './sevices'
 import '@/assets/index.less'
 import '@/assets/resetEle.less'
 import {
-  Menu,
-  MenuItem,
+  Button,
   Input,
+  Select,
   MessageBox,
   Loading,
   Notification,
@@ -15,9 +16,12 @@ import {
 
 Vue.config.productionTip = false
 
-Vue.use(Menu)
-Vue.use(MenuItem)
+Vue.prototype.$ELEMENT = { size: 'small' };
+Vue.prototype.$http = http;
+
+Vue.use(Button)
 Vue.use(Input)
+Vue.use(Select)
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

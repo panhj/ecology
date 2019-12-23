@@ -30,6 +30,6 @@ export default {
   user-select: none;
 }
 .content {
-  padding: 10px 1px;
+  padding: 5px 3px 10px 3px;
 }
 </style>
