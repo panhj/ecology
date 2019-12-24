@@ -18,12 +18,17 @@ export default new Router({
           path: 'ecology',
           name: 'ecology',
           redirect: '/ecology/requirements',
-          component: () => import(/* webpackChunkName: "about" */ './views/ecology/index.vue'),
+          component: () => import('./views/ecology/index.vue'),
           children: [
             {
               path: 'requirements',
               name: 'requirements',
-              component: () => import(/* webpackChunkName: "about" */ './views/ecology/Requirements.vue'),
+              component: () => import('./views/ecology/Requirements.vue'),
+            },
+            {
+              path: 'habitatArea',
+              name: 'habitatArea',
+              component: () => import('./views/ecology/HabitatArea.vue'),
             }
           ]
         }

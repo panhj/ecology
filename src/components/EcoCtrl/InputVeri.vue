@@ -34,7 +34,7 @@ export default {
   .icon-pre {
     font-size: 18px;
     margin: 0 10px 0 2px;
-    color: #aaa;
+    color: #bbb;
   }
   .icon-pre.ok {
     color: rgb(41, 81, 202);

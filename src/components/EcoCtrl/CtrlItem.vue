@@ -23,7 +23,7 @@ export default {
   color: rgb(41, 81, 202);
 }
 .title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   padding: 13px 1px 11px 1px;
   border-bottom: 1px solid #eaeaea;
