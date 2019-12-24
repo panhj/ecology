@@ -20,7 +20,7 @@
       </CtrlItem>
       <CtrlItem title="参数设置">
         <div class="double-select">
-          <el-select class="select m-r" v-model="Form.bioType" placeholder="选择目标物种">
+          <el-select class="select" v-model="Form.bioType" placeholder="选择目标物种">
             <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
           <el-select class="select" v-model="Form.bioType" placeholder="选择环境参数">
@@ -89,30 +89,15 @@ export default {
 .form-item,.double-select, .btns {
   margin-top: 10px;
 }
-.form-item {
-  justify-content: flex-start;
-  font-size: 14px;
-  .label, .meta {
-    display: inline-block;
-  }
-  .label {
-    width: 70px;
-  }
-  .meta {
-    margin-left: 2px;
-    font-size: 13px;
-    color: #999;
-    white-space: nowrap;
-  }
-}
 .double-select {
   margin-left: 30px;
-  .select.m-r { margin-right: 10px; }
+  div.el-select+div.el-select { margin-left: 15px; }
 }
 .btns {
   padding: 0 20px;
   button {
-    padding: 7px 40px !important;
+    padding: 8px 40px !important;
+    font-size: 13px;
   }
 }
 </style>

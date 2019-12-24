@@ -20,6 +20,24 @@ ol li, ul li {
   align-items: center;
 }
 
+.form-item {
+  justify-content: flex-start;
+  font-size: 14px;
+  .label, .meta {
+    display: inline-block;
+  }
+  .label {
+    width: 70px;
+  }
+  .meta {
+    margin-left: 2px;
+    font-size: 13px;
+    color: #999;
+    white-space: nowrap;
+    cursor: default;
+  }
+}
+
 .upload-btn {
   width: 135px;
   height: 32px;
@@ -28,6 +46,6 @@ ol li, ul li {
   font-size: 14px;
   text-decoration: underline;
   border: 1px solid #DCDFE6;
-  background-color: #f2f2f2;
+  background-color: #e2e2e2;
   cursor: pointer;
 }

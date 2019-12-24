@@ -29,6 +29,11 @@ export default new Router({
               path: 'habitatArea',
               name: 'habitatArea',
               component: () => import('./views/ecology/HabitatArea.vue'),
+            },
+            {
+              path: 'flowDecision',
+              name: 'flowDecision',
+              component: () => import('./views/ecology/FlowDecision.vue'),
             }
           ]
         }

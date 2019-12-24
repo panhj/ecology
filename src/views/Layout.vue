@@ -23,7 +23,7 @@ export default {
 <style lang="less" scoped>
 .home {
   height: 100vh;
-  min-width: 1100px;
+  min-width: 1200px;
   min-height: 600px;
   overflow: auto;
   background-color: @bg-color;

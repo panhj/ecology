@@ -6,7 +6,7 @@
           <el-select class="select m-r" v-model="Form.targetRiver" placeholder="选择目标河段">
             <el-option v-for="item in targetRisvers" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <InputVeri :verity="Verity.flowFile" style="margin: 0;">
+          <InputVeri :verity="Verity.flowFile">
             <div class="upload-btn"><span>导入水数据</span></div>
           </InputVeri>
         </div>
@@ -31,25 +31,9 @@
         </div>
       </CtrlItem>
       <CtrlItem title="计算组合环境参数栖息地面积">
-        <div class="double-select">
-          <el-select class="select m-r" v-model="Form.bioType" placeholder="选择目标物种">
-            <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          <el-select class="select" v-model="Form.bioType" placeholder="选择环境参数">
-            <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </div>
-        <InputVeri :verity="Verity.autoInterval" tip="（输入1-10整数）">
-          <el-input class="input" v-model="Form.autoInterval" placeholder="输入环境参数间隔"></el-input>
-        </InputVeri>
-        <InputVeri :verity="Verity.manualInterval" tip="（逗号间隔，小数点后最多两位）">
-          <el-input class="input" v-model="Form.manualInterval" placeholder="自定义值"></el-input>
-        </InputVeri>
-      </CtrlItem>
-      <CtrlItem title="模型计算">
         <div class="btns flex-center">
-          <el-button type="primary">求指数</el-button>
-          <el-button type="primary">求均值</el-button>
+          <el-button type="primary">权值适宜面积</el-button>
+          <el-button type="primary">流量与适宜面积关系曲线</el-button>
         </div>
       </CtrlItem>
     </CtrlPannel>
@@ -76,25 +60,20 @@ export default {
       flows: [],
       envParams: [],
       requireModels: [],
+      bioTypes: [],
       Form: {
         targetRiver: "",
         flow: "",
         envParam: "",
-        requireModel: "",
-        autoInterval: "",
-        manualInterval: ""
+        requireModel: ""
       },
       Verity: {
-        flowFile: false,
-        autoInterval: false,
-        manualInterval: false
+        flowFile: false
       }
     }
   },
   mounted () {
-    this.$http.post("bio-req/bio-types").then(res => {
-      console.log(res)
-    }).catch(e => {console.warn(e)})
+    
   }
 }
 </script>
@@ -119,20 +98,28 @@ export default {
     font-size: 13px;
     color: #999;
     white-space: nowrap;
+    cursor: default;
   }
 }
 .double-input {
   margin-top: 10px;
+  justify-content: flex-start;
   .select.m-r { margin-right: 10px; }
+  div.el-select+div.input-veri { margin:0 0 0 15px; }
 }
 .double-select {
-  .select.m-r { margin-right: 10px; }
+  div.el-select+div.el-select { margin-left: 15px; }
 }
 .btns {
-  padding: 10px 20px 0 20px;
+  padding: 10px 0 0 0;
+  justify-content: flex-start;
   text-align: center;
   button {
-    padding: 7px 40px !important;
+    padding: 8px 24px !important;
+    font-size: 13px;
+  }
+  button+button {
+    margin-left: 26px;  
   }
 }
 </style>
