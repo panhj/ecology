@@ -7,6 +7,13 @@ module.exports = {
     }
   },
   publicPath: '/',
+  configureWebpack: {
+    externals: {
+      "BMap": "BMap",
+      "BMAP_NORMAL_MAP": "BMAP_NORMAL_MAP",
+      "BMAP_HYBRID_MAP": "BMAP_HYBRID_MAP"
+    }
+  },
   devServer: {
     open: false, //是否自动弹出浏览器页面
     host: "localhost",

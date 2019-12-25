@@ -76,9 +76,9 @@ export default {
     }
   },
   mounted () {
-    this.$http.post("bio-req/bio-types").then(res => {
-      console.log(res)
-    }).catch(e => {console.warn(e)})
+    // this.$http.post("bio-req/bio-types").then(res => {
+    //   console.log(res)
+    // }).catch(e => {console.warn(e)})
   }
 }
 </script>

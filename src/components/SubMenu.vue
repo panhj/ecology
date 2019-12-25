@@ -1,8 +1,12 @@
 <template>
   <div>
     <ul class="menu flex-center">
-      <li><router-link to="#"><span>岸线<br/>历史演变</span></router-link></li>
-      <li><router-link to="#"><span>岸带<br/>质量评估</span></router-link></li>
+      <li>
+        <router-link to="#"><span>岸线<br/>历史演变</span></router-link>
+      </li>
+      <li>
+        <router-link to="#"><span>岸带<br/>质量评估</span></router-link>
+      </li>
       <li :class="{'active': routerName  === 'requirements'}">
         <router-link to="/ecology/requirements"><span>栖息地<br/>需求模型</span></router-link>
       </li>
@@ -54,6 +58,9 @@ export default {
       height: 100%;
       padding: 5px;
       text-align: center;
+    }
+    &>a:hover {
+      background-color: #5ec149;
     }
   }
   &>li:nth-child(1) {margin: 0;}
