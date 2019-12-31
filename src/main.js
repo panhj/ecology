@@ -2,12 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import http from './sevices'
+import store from './store'
 import '@/assets/index.less'
 import '@/assets/resetEle.less'
 import {
   Button,
   Input,
   Select,
+  Option,
+  Upload,
   MessageBox,
   Loading,
   Notification,
@@ -18,10 +21,13 @@ Vue.config.productionTip = false
 
 Vue.prototype.$ELEMENT = { size: 'small' };
 Vue.prototype.$http = http;
+Vue.prototype.$store = store;
 
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Select)
+Vue.use(Option)
+Vue.use(Upload)
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

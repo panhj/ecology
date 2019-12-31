@@ -22,7 +22,7 @@
         </div>
         <div class="form-item flex-center">
           <el-select class="select" v-model="Form.requireModel" placeholder="选择需求模型">
-            <el-option v-for="item in requireModels" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-option v-for="item in requireModels" :key="item.modelId" :label="item.modelName" :value="item.modelId"></el-option>
           </el-select>
           <span class="meta">（最高显示10个最新模型）</span>
         </div>
@@ -72,8 +72,13 @@ export default {
       }
     }
   },
+  methods: {
+    getModels () {
+      this.$http.post('bio-req/models').then(res => this.requireModels = res)
+    }
+  },
   mounted () {
-    
+    this.getModels()
   }
 }
 </script>

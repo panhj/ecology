@@ -39,17 +39,31 @@ ol li, ul li {
 }
 
 .upload-btn {
-  width: 135px;
+  width: 150px;
   height: 32px;
   line-height: 30px;
-  padding: 0 20px;
-  font-size: 14px;
+  padding: 0 15px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
   text-decoration: underline;
   border: 1px solid #DCDFE6;
   background-color: #e2e2e2;
   cursor: pointer;
 }
 
+// 隐藏地图的版权
 .anchorBL:not(.BMap_noprint) {
   display:none;
+}
+
+.drag-container {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 0 rgba(0,0,0,.1);
+  .el-upload__tip {
+    font-size: 13px;
+    color: #aaa;
+  }
 }

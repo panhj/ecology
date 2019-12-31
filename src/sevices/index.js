@@ -33,7 +33,7 @@ const getUrlEncode = async (url, params) => {
   const formatUrl = url + obj2params(params)
   return await request(formatUrl, {
     method: 'GET',
-    header: {
+    headers: {
       'Content-type': 'application/x-www-form-urlencoded'
     }
   })
@@ -49,7 +49,7 @@ const get = async (url, params={}) => {
 const post = async (url, params={}) => {
   return await request(url, {
     method: 'POST',
-    header: {
+    headers: {
       'Content-type': 'application/json'
     },
     body: JSON.stringify(params)

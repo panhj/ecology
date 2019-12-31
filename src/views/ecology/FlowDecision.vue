@@ -66,7 +66,7 @@ export default {
   justify-content: flex-start;
   text-align: left;
   button {
-    padding: 8px 24px !important;
+    padding: 8px 22px !important;
     font-size: 13px;
   }
 }

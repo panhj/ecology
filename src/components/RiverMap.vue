@@ -3,7 +3,7 @@
     <div class="map">
       <div id="MAP"></div> 
     </div>
-    <div class="flex-center">
+    <div>
       <slot></slot>
     </div>
   </div>
@@ -99,13 +99,12 @@ export default {
     },
     getEdgeFromZoom () {
       const zoom = myMap.getZoom()
-      let EDGE = 2
       return this.zomm2edge[zoom+''] || 1
     }
   },
   mounted () {
     this.initMap()
-    // this.draw(GPSDATA)
+    this.draw(GPSDATA)
     this.getLineData()
   }
 }

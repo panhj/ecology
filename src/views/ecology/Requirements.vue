@@ -14,23 +14,23 @@
         </div>
       </CtrlItem>
       <CtrlItem title="读取数据">
-        <InputVeri :verity="Verity.waterFile">
-          <div class="upload-btn"><span>导入水数据</span></div>
+        <InputVeri :verify="Verify.waterFile">
+          <div class="upload-btn" @click="uploadShow = true"><span>导入水生物需求数据</span></div>
         </InputVeri>
       </CtrlItem>
       <CtrlItem title="参数设置">
         <div class="double-select">
           <el-select class="select" v-model="Form.bioType" placeholder="选择目标物种">
-            <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-option v-for="item in bioTypes" :key="item.label" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <el-select class="select" v-model="Form.bioType" placeholder="选择环境参数">
-            <el-option v-for="item in bioTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-select class="select" v-model="Form.envType" placeholder="选择环境参数">
+            <el-option v-for="item in envTypes" :key="item.label" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </div>
-        <InputVeri :verity="Verity.autoInterval" tip="（输入1-10整数）">
-          <el-input class="input" v-model="Form.autoInterval" placeholder="输入环境参数间隔"></el-input>
+        <InputVeri :verify="Verify.autoInterval" tip="（输入1-10整数）">
+          <el-input class="input" v-model="Form.autoInterval" placeholder="输入环境参数间隔" @input="checkAutoInterval"></el-input>
         </InputVeri>
-        <InputVeri :verity="Verity.manualInterval" tip="（逗号间隔，小数点后最多两位）">
+        <InputVeri :verify="Verify.manualInterval" tip="（逗号间隔，小数点后最多两位）">
           <el-input class="input" v-model="Form.manualInterval" placeholder="自定义值"></el-input>
         </InputVeri>
       </CtrlItem>
@@ -42,7 +42,18 @@
       </CtrlItem>
     </CtrlPannel>
     <RiverMap>
-      
+      <div class="map-pannel flex-center" v-show="uploadShow">
+        <el-upload
+          class="upload-demo"
+          drag
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-success="uploadSuccess"
+          multiple>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">点击或者将文件拖拽到这里上传</div>
+          <div class="el-upload__tip">支持拓展名：.rar .zip .docx .pdf .jpg...</div>
+        </el-upload>
+      </div>
     </RiverMap>
   </div>
 </template>
@@ -60,22 +71,47 @@ export default {
   },
   data () {
     return {
+      uploadShow: false,
       bioTypes: [],
+      envTypes: [
+        {label: '平均流速', value: 'AVG_FLOW_RATE'},
+        {label: '表层流速', value: 'SFC_FLOW_RATE'},
+        {label: '近低流速', value: 'BTM_FLOW_RATE'},
+        {label: '水深', value: 'WATER_DEPTH'},
+      ],
       Form: {
         createName: "",
         createAuthor: "",
         bioType: "",
+        envType: "",
         autoInterval: "",
         manualInterval: ""
       },
-      Verity: {
+      Verify: {
         waterFile: false,
         autoInterval: false,
         manualInterval: false
       }
     }
   },
+  methods: {
+    getEnvs () {
+
+    },
+    uploadSuccess (response, file, fileList) {
+      console.log(response)
+    },
+    checkAutoInterval (value) {
+      if (/(^[1-9]\d*$)/.test(+value) && +value > 0 && +value < 11) {
+        console.log(value)
+        this.Verify.autoInterval = true
+      } else {
+        this.Verify.autoInterval = false
+      }
+    }
+  },
   mounted () {
+    this.$store.dispatch('getSpecies').then(res => this.bioTypes = res)
     // this.$http.post("bio-req/bio-types").then(res => {
     //   console.log(res)
     // }).catch(e => {console.warn(e)})
@@ -99,5 +135,11 @@ export default {
     padding: 8px 40px !important;
     font-size: 13px;
   }
+}
+.map-pannel {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,.38);
 }
 </style>
