@@ -54,6 +54,27 @@
           <div class="el-upload__tip">支持拓展名：.rar .zip .docx .pdf .jpg...</div>
         </el-upload>
       </div>
+      <div class="map-pannel flex-center" v-show="computedShow">
+        <div class="compute-pannel">
+          <p class="title">{{computedName}}</p>
+          <div class="charts" id="line_chart"></div>
+          <div class="value-table">
+            <div class="row th">
+              <span class="item">startValue</span>
+              <span class="item">endValue</span>
+              <span class="item">value</span>
+            </div>
+            <div class="row" v-for="item in computedValue" :key="item.startValue">
+              <span class="item">{{item.startValue}}</span>
+              <span class="item">{{item.endValue}}</span>
+              <span class="item">{{item.value}}</span>
+            </div>
+          </div>
+          <p style="text-align:center;">
+            <el-button type="primary" @click="saveValue">保 存</el-button>
+          </p>
+        </div>
+      </div>
     </RiverMap>
   </div>
 </template>
@@ -62,6 +83,7 @@ import CtrlPannel from '@/components/ecoCtrl/CtrlPannel.vue'
 import CtrlItem from '@/components/ecoCtrl/CtrlItem.vue'
 import InputVeri from '@/components/ecoCtrl/InputVeri.vue'
 import RiverMap from '@/components/RiverMap.vue'
+import echarts from 'echarts'
 export default {
   components: {
     CtrlPannel,
@@ -73,6 +95,8 @@ export default {
     return {
       uploadFileName: '导入水生物需求数据',
       uploadShow: false,
+      computedShow: false,
+      computedName: '平均流速适宜指数分类曲线',
       bioTypes: [],
       envTypes: [
         {label: '平均流速', value: 'AVG_FLOW_RATE'},
@@ -92,7 +116,27 @@ export default {
         waterFile: false,
         autoInterval: false,
         manualInterval: false
-      }
+      },
+      computedValue: [
+        {
+          startValue: 0.1,
+          endValue: 0.3,
+          bioName: '总生物量',
+          value: 0.82374
+        },
+        {
+          startValue: 0.3,
+          endValue: 0.6,
+          bioName: '总生物量',
+          value: 0.232374
+        },
+        {
+          startValue: 0.6,
+          endValue: 1.6,
+          bioName: '总生物量',
+          value: 0.432374
+        }
+      ]
     }
   },
   methods: {
@@ -126,6 +170,65 @@ export default {
         this.Verify.manualInterval = true
       }
     },
+    drawLine (computedValue) {
+      const xData = []
+      const yData = []
+      computedValue.forEach(v => {
+        xData.push(`${v.startValue} ~ ${v.endValue}`)
+        yData.push(v.value)
+      })
+      const lineOption = {
+        title: {
+          text: '适宜度指数',
+          top: 16,
+          left: 10,
+          textStyle: {
+            fontWeight: 'normal',
+            fontSize: 16,
+            color: '#666'
+          }
+        },
+        grid: {
+          bottom: "10%",
+          right: "8%"
+        },
+        tooltip: { show: false },
+        legend: {
+          show: false
+        },
+        xAxis: {
+          data: xData,
+        },
+        yAxis: {
+          
+        },
+        series: [
+          {
+            name: '1',
+            type: 'bar',
+            barCategoryGap: 0,
+            itemStyle: {
+              color: "#fafafa",
+              borderColor: "#555555",
+            },
+            data: yData
+          },
+          {
+            name: '2',
+            type: 'line',
+            symbolSize: 7,
+            label: {
+                show: true,
+            },
+            data: yData
+          }
+        ]
+      }
+      setTimeout(() => {
+        const lineChart = echarts.init(document.getElementById("line_chart"))
+        lineChart.setOption(lineOption)
+      }, 200)
+    },
     compute (type) {
       const {
         modelName,
@@ -148,17 +251,26 @@ export default {
       }
       if (type === 'index') {
         this.$http.post("bio-req/compute-avg", params).then(res => {
-          console.log(res)
+          this.computedShow = true
+          this.computedName = "流速适宜指数分类曲线"
+          this.computedValue = res
+          this.drawLine(res)
         }).catch(e => {
           this.$message.error(e.msg)
         })
       } else if (type === 'avg') {
         this.$http.post("bio-req/compute-index", params).then(res => {
-          console.log(res)
+          this.computedShow = true
+          this.computedName = "平均流速适宜指数分类曲线"
+          this.computedValue = res
+          this.drawLine(res)
         }).catch(e => {
           this.$message.error(e.msg)
         })
       }
+    },
+    saveValue () {
+
     }
   },
   mounted () {
@@ -189,5 +301,55 @@ export default {
   top: 0; left: 0;
   width: 100%; height: 100%;
   background-color: rgba(0,0,0,.38);
+}
+.compute-pannel {
+  width: 450px;
+  text-align: center;
+  background-color: #fff;
+  padding: 0 10px 10px 10px;
+  box-shadow: 0 0 15px 0 rgba(0,0,0,.38);
+  border-radius: 4px;
+  &>.title {
+    display: inline-block;
+    padding: 5px 14px;
+    font-size: 20px;
+    color: #fff;
+    background-color: #409EFF;
+  }
+  .charts {
+    margin-top: 10px;
+    background-color: #efefef;
+    border: 1px solid #ddd;
+    height: 280px;
+  }
+  .value-table {
+    margin: 10px 0;
+    border:1px solid #aaa;
+    background-color: #f6f6f6;
+    max-height: 200px;
+    overflow-y: auto;
+    .row+.row {
+      border-top: 1px solid #aaa;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      &>.item {
+        width: 30%;
+        flex-grow: 1;
+        padding: 5px 0;
+      }
+      .item+.item {
+        border-left: 1px solid #aaa;
+      }
+      &.th {
+        background-color: #888;
+        color: #fff;
+        .item+.item {
+          border-left: 1px solid #fff;
+        }
+      }
+    }
+  }
 }
 </style>
