@@ -19,7 +19,13 @@ const request = (url, options) => {
       }
     })
     .then(res => res.json())
-    .then(res => resolve(res.data))
+    .then(res => {
+      if (res.code === 0) {
+        resolve(res.data)
+      } else {
+        reject(res)
+      }
+    })
     .catch(err => reject(err))
   })
 }

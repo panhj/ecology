@@ -103,9 +103,9 @@ export default {
     }
   },
   mounted () {
-    this.initMap()
-    this.draw(GPSDATA)
-    this.getLineData()
+    // this.initMap()
+    // this.draw(GPSDATA)
+    // this.getLineData()
   }
 }
 </script>
