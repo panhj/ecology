@@ -149,7 +149,7 @@ export default {
         this.uploadShow = false
         this.uploadFileName = file.name || '导入水生物需求数据'
       } else {
-      this.$message.error("上传失败")
+        this.$message.error("上传失败")
       }
     },
     uploadError () {
@@ -295,12 +295,6 @@ export default {
     padding: 8px 40px !important;
     font-size: 13px;
   }
-}
-.map-pannel {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,.38);
 }
 .compute-pannel {
   width: 450px;

@@ -95,6 +95,8 @@ export default {
         myMap.setCenter(point)
         myMap.setZoom(9)
         this.draw(gpsData)
+      }).catch(e => {
+        this.$message.error("请求地图数据失败 " + e.msg)
       })
     },
     getEdgeFromZoom () {
@@ -103,9 +105,10 @@ export default {
     }
   },
   mounted () {
-    // this.initMap()
-    // this.draw(GPSDATA)
-    // this.getLineData()
+    this.initMap()
+    this.getLineData()
+    // mock
+    this.draw(GPSDATA)
   }
 }
 </script>

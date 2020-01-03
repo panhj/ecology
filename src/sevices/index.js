@@ -11,13 +11,6 @@ const request = (url, options) => {
       reject("your broswer not support fetch")
     }
     fetch(BASE_URL + url, fetchOpt)
-    .then(res => {
-      if (res.status === 200) {
-        return res
-      } else {
-        throw new Error(res)
-      }
-    })
     .then(res => res.json())
     .then(res => {
       if (res.code === 0) {
