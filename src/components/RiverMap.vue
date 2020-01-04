@@ -1,7 +1,7 @@
 <template>
   <div class="map-container">
     <div class="map">
-      <div id="MAP"></div> 
+      <div id="MAP"></div>
     </div>
     <div>
       <slot></slot>
@@ -106,9 +106,9 @@ export default {
   },
   mounted () {
     this.initMap()
-    this.getLineData()
+    // this.getLineData()
     // mock
-    this.draw(GPSDATA)
+    // this.draw(GPSDATA)
   }
 }
 </script>

@@ -14,25 +14,29 @@
         </div>
       </CtrlItem>
       <CtrlItem title="读取数据">
-        <InputVeri :verify="Verify.waterFile">
-          <div class="upload-btn" @click="uploadShow = true"><span>{{uploadFileName}}</span></div>
-        </InputVeri>
+        <button class="upload-btn mrg-t mrg-l" @click="uploadShow = true"><span>{{uploadFileName}}</span></button>
       </CtrlItem>
       <CtrlItem title="参数设置">
         <div class="double-select">
           <el-select class="select" v-model="Form.bioType" placeholder="选择目标物种">
             <el-option v-for="item in bioTypes" :key="item.label" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <el-select class="select" v-model="Form.envType" placeholder="选择环境参数">
+          <el-select class="select" v-model="Form.envType" placeholder="选择环境参数" @change="envTypeChange">
             <el-option v-for="item in envTypes" :key="item.label" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </div>
-        <InputVeri :verify="Verify.autoInterval" tip="（输入1-10整数）">
-          <el-input class="input" v-model="Form.autoInterval" placeholder="输入环境参数间隔" @input="checkAutoInterval"></el-input>
-        </InputVeri>
-        <InputVeri :verify="Verify.manualInterval" tip="（逗号间隔，小数点后最多两位）">
-          <el-input class="input" v-model="Form.manualInterval" placeholder="自定义值" @input="checkManualInterval"></el-input>
-        </InputVeri>
+        <el-radio v-model="IntervaluType" label="autoInterval">
+          <div class="form-item flex-center" style="display: inline-block;">
+            <el-input class="input" v-model="Form.autoInterval" placeholder="输入环境参数间隔"></el-input>
+            <span class="meta">（输入范围：{{intervalRangeString}} ）</span>
+          </div>
+        </el-radio>
+        <el-radio v-model="IntervaluType" label="manualInterval">
+          <div class="form-item flex-center" style="display: inline-block;">
+            <el-input class="input" v-model="Form.manualInterval" placeholder="自定义值"></el-input>
+            <span class="meta">（逗号间隔，小数点后最多两位）</span>
+          </div>
+        </el-radio>
       </CtrlItem>
       <CtrlItem title="模型计算">
         <div class="btns flex-center">
@@ -43,18 +47,21 @@
     </CtrlPannel>
     <RiverMap>
       <div class="map-pannel flex-center" v-show="uploadShow">
+        <i class="el-icon-close icon-close" @click="uploadShow = false"></i>
         <el-upload
           class="upload-demo"
           drag
+          accept=".xls,.xlsx"
           action="http://118.24.156.207:8008/upload/benthicorganism"
           :on-success="uploadSuccess"
           :on-error="uploadError">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">点击或者将文件拖拽到这里上传</div>
-          <div class="el-upload__tip">支持拓展名：.rar .zip .docx .pdf .jpg...</div>
+          <div class="el-upload__tip">支持拓展名：.xls, xlsx</div>
         </el-upload>
       </div>
       <div class="map-pannel flex-center" v-show="computedShow">
+        <i class="el-icon-close icon-close" @click="computedShow = false"></i>
         <div class="compute-pannel">
           <p class="title">{{computedName}}</p>
           <div class="charts" id="line_chart"></div>
@@ -71,7 +78,7 @@
             </div>
           </div>
           <p style="text-align:center;">
-            <el-button type="primary" @click="saveValue">保 存</el-button>
+            <el-button type="primary" @click="compute('save')">保 存</el-button>
           </p>
         </div>
       </div>
@@ -81,15 +88,13 @@
 <script>
 import CtrlPannel from '@/components/ecoCtrl/CtrlPannel.vue'
 import CtrlItem from '@/components/ecoCtrl/CtrlItem.vue'
-import InputVeri from '@/components/ecoCtrl/InputVeri.vue'
 import RiverMap from '@/components/RiverMap.vue'
 import echarts from 'echarts'
 export default {
   components: {
     CtrlPannel,
     CtrlItem,
-    RiverMap,
-    InputVeri
+    RiverMap
   },
   data () {
     return {
@@ -104,6 +109,9 @@ export default {
         {label: '近低流速', value: 'BTM_FLOW_RATE'},
         {label: '水深', value: 'WATER_DEPTH'},
       ],
+      IntervaluType: "autoInterval",
+      intervalRange: {min : 0, max: 5},
+      intervalRangeString: "请先选择环境参数",
       Form: {
         modelName: "",
         modelCreator: "",
@@ -113,7 +121,6 @@ export default {
         manualInterval: ""
       },
       Verify: {
-        waterFile: false,
         autoInterval: false,
         manualInterval: false
       },
@@ -140,9 +147,6 @@ export default {
     }
   },
   methods: {
-    getEnvs () {
-
-    },
     uploadSuccess (response, file) {
       if (response && response.code === 0) {
         this.$message.success("上传成功")
@@ -155,19 +159,38 @@ export default {
     uploadError () {
       this.$message.error("上传失败")
     },
-    checkAutoInterval (value) {
-      if (/(^[1-9]\d*$)/.test(+value) && +value > 0 && +value < 11) {
-        this.Verify.autoInterval = true
+    envTypeChange () {
+      console.log(this.Form.envType)
+      const { envType } = this.Form
+      if (!envType) return this.intervalRangeString = "请先选择环境参数"
+      this.$http.post("bio-req/envs", { envType }).then(res => {
+        this.intervalRange = res
+        this.intervalRangeString = `${res.min} ~ ${res.max}`
+      })
+    },
+    _checkAutoInterval () {
+      const value = this.Form.autoInterval
+      const { min, max } = this.intervalRange
+      if (typeof +value === 'number' && +value > min && +value < max) {
+        return true
       } else {
-        this.Verify.autoInterval = false
+        this.$message.error("环境参数值需在" + this.intervalRangeString + "范围内")
+        return false
       }
     },
-    checkManualInterval (value) {
-      if (!value) return this.Verify.manualInterval = false
-      if (/[^\d+(,\d\d\d)*.\d+$]/g.test(value)) {
-        this.Verify.manualInterval = false
+    _checkManualInterval () {
+      const value = this.Form.manualInterval
+      if ((/[^\d+(,\d\d\d)*.\d+$]/g.test(value))) {
+        this.$message.error("自定义环境参数输入格式不正确")
+        return false
+      }
+      const { min, max } = this.intervalRange
+      const aValue = value.split(',')
+      if (+aValue[0] > min && +aValue[aValue.length-1] < max) {
+        return true
       } else {
-        this.Verify.manualInterval = true
+        this.$message.error("环境参数值需在" + this.intervalRangeString + "范围内")
+        return false
       }
     },
     drawLine (computedValue) {
@@ -189,7 +212,7 @@ export default {
           }
         },
         grid: {
-          bottom: "10%",
+          bottom: xData.length > 4 ? "20%" : "10%",
           right: "8%"
         },
         tooltip: { show: false },
@@ -198,6 +221,10 @@ export default {
         },
         xAxis: {
           data: xData,
+          axisLabel: {
+            interval: 0,
+            rotate: xData.length > 4 ? 45 : 0
+          } 
         },
         yAxis: {
           
@@ -235,20 +262,22 @@ export default {
         modelCreator,
         bioType,
         envType,
-        autoInterval,
-        manualInterval
       } = this.Form
       const params = {
-        autoInterval,
         bioType,
         envType,
-        manualInterval,
         modelCreator,
+        [this.IntervaluType] : this.Form[this.IntervaluType],
         modelName
       }
       if (!modelName || !modelCreator) {
-        return this.$message.error("请输入正确的值")
+        return this.$message.error("请输入正确创建名称/人")
       }
+      if (!bioType || !envType) {
+        return this.$message.error("请选择目标物种和环境参数")
+      }
+      if (this.IntervaluType === "autoInterval" && !this._checkAutoInterval()) return false
+      if (this.IntervaluType === "manualInterval" && !this._checkManualInterval()) return false
       if (type === 'index') {
         this.$http.post("bio-req/compute-avg", params).then(res => {
           this.computedShow = true
@@ -267,10 +296,12 @@ export default {
         }).catch(e => {
           this.$message.error(e.msg)
         })
+      } else if (type === 'save') {
+        this.$http.post("bio-req/save-model", params).then(res => {
+          this.computedShow = false
+          this.$message.success("保存成功")
+        })
       }
-    },
-    saveValue () {
-
     }
   },
   mounted () {
@@ -286,7 +317,7 @@ export default {
   margin-top: 10px;
 }
 .double-select {
-  margin-left: 30px;
+  margin-left: 24px;
   div.el-select+div.el-select { margin-left: 15px; }
 }
 .btns {
@@ -346,4 +377,6 @@ export default {
     }
   }
 }
+.mrg-t { margin-top: 15px; }
+.mrg-l { margin-left: 24px; }
 </style>

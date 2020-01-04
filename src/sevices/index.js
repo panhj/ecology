@@ -1,4 +1,5 @@
-const BASE_URL = "/api/"
+// const BASE_URL = "/api/"
+const BASE_URL = "/"
 
 const request = (url, options) => {
   const baseOpt = {

@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Select,
+  Radio,
   Option,
   Upload,
   MessageBox,
@@ -26,6 +27,7 @@ Vue.prototype.$store = store;
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Select)
+Vue.use(Radio)
 Vue.use(Option)
 Vue.use(Upload)
 
